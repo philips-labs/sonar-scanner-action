@@ -1,0 +1,22 @@
+{
+  "name": "sonar-scanner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "tsc --noEmit && jest"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.2",
+    "@actions/exec": "^1.0.3",
+    "@actions/io": "^1.0.2",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.0",
+    "@types/node": "^13.5.1",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.0.0"
+  }
+}

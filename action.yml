@@ -1,0 +1,18 @@
+name: SonarQube Scanner
+description: Static Analysis using SonarQube
+author: Patrick Mennen <patrick.mennen@philips.com>
+inputs:
+  app: Application name
+  required: true
+
+  baseDir: Project Base Directory
+  required: true
+
+  login: Sonar Login Token
+  required: true
+
+  url: Sonar Server url
+  required: true
+runs:
+  usign: node12
+  main: dist/index.js
