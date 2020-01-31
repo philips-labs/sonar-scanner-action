@@ -1,9 +1,7 @@
 import { sonarScanner } from './src/sonarScanner';
 import { exec } from '@actions/exec';
 
-jest.mock('@actions/exec', () => ({
-  exec: jest.fn(),
-}));
+jest.mock('@actions/exec');
 
 describe('SonarQube Scanner Action', () => {
   it('should throw an error when the app parameter is missing', async () => {
@@ -38,7 +36,7 @@ describe('SonarQube Scanner Action', () => {
   it('should throw an error when the SonarQube URL parameter is missing', async () => {
     process.env['INPUT_APP'] = 'HelloWorld';
     process.env['INPUT_BASEDIR'] = 'src/';
-    process.env['INPUT_TOKEN'] = 'src/';
+    process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
 
     try {
       await sonarScanner();
@@ -50,12 +48,12 @@ describe('SonarQube Scanner Action', () => {
   it('starts the action when all parameters are set', async () => {
     process.env['INPUT_APP'] = 'HelloWorld';
     process.env['INPUT_BASEDIR'] = 'src/';
-    process.env['INPUT_TOKEN'] = 'src/';
+    process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
     process.env['INPUT_URL'] = 'http://example.com';
 
     await sonarScanner();
     expect(exec).toHaveBeenCalledWith('sonar-scanner', [
-      '-Dsonar.login="src/"',
+      '-Dsonar.login="Dummy-Security-Token"',
       '-Dsonar.host.url="http://example.com"',
       '-Dsonar.projectBaseDir="src/"',
       '-Dsonar.projectKey="HelloWorld"',
@@ -68,7 +66,7 @@ describe('SonarQube Scanner Action', () => {
   it('throws an error when SonarQube fails', async () => {
     process.env['INPUT_APP'] = 'HelloWorld';
     process.env['INPUT_BASEDIR'] = 'src/';
-    process.env['INPUT_TOKEN'] = 'src/';
+    process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
     process.env['INPUT_URL'] = 'http://example.com';
 
     const mockedExec = exec as jest.Mock<Promise<number>>;
