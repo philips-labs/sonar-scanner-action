@@ -11,7 +11,7 @@ const sonarScanner_1 = require("./src/sonarScanner");
 const core = __importStar(require("@actions/core"));
 async function run() {
     try {
-        sonarScanner_1.sonarScanner();
+        await sonarScanner_1.sonarScanner();
     }
     catch (error) {
         core.setFailed(error.message);
