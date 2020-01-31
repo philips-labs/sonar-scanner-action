@@ -10,7 +10,6 @@
   "dependencies": {
     "@actions/core": "^1.2.2",
     "@actions/exec": "^1.0.3",
-    "@actions/io": "^1.0.2",
     "typescript": "^3.7.5"
   },
   "devDependencies": {
