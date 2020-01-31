@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "test": "tsc --noEmit && jest"
+    "test": "jest"
   },
   "dependencies": {
     "@actions/core": "^1.2.2",
