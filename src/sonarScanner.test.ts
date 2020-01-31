@@ -11,45 +11,25 @@ describe('SonarQube Scanner Action', () => {
     process.env['INPUT_URL'] = 'http://example.com';
   });
 
-  it('should throw an error when the app parameter is missing', async () => {
-    delete process.env['INPUT_APP'];
+  it.each`
+    option             | value
+    ${'INPUT_BASEDIR'} | ${'baseDir'}
+    ${'INPUT_APP'}     | ${'app'}
+    ${'INPUT_TOKEN'}   | ${'token'}
+    ${'INPUT_URL'}     | ${'url'}
+  `(
+    `should throw an error when the option $value is missing`,
+    async ({ option, value }) => {
+      expect.assertions(1);
+      delete process.env[option];
 
-    try {
-      await sonarScanner();
-    } catch (e) {
-      expect(e.message).toContain('not supplied: app');
-    }
-  });
-
-  it('should throw an error when the baseDir parameter is missing', async () => {
-    delete process.env['INPUT_BASEDIR'];
-
-    try {
-      await sonarScanner();
-    } catch (e) {
-      expect(e.message).toContain('not supplied: baseDir');
-    }
-  });
-
-  it('should throw an error when the token parameter is missing', async () => {
-    delete process.env['INPUT_TOKEN'];
-
-    try {
-      await sonarScanner();
-    } catch (e) {
-      expect(e.message).toContain('not supplied: token');
-    }
-  });
-
-  it('should throw an error when the SonarQube URL parameter is missing', async () => {
-    delete process.env['INPUT_URL'];
-
-    try {
-      await sonarScanner();
-    } catch (e) {
-      expect(e.message).toContain('not supplied: url');
-    }
-  });
+      try {
+        await sonarScanner();
+      } catch (e) {
+        expect(e.message).toContain(`not supplied: ${value}`);
+      }
+    },
+  );
 
   it('starts the action when all parameters are set', async () => {
     await sonarScanner();
@@ -65,6 +45,8 @@ describe('SonarQube Scanner Action', () => {
   });
 
   it('throws an error when SonarQube fails', async () => {
+    expect.assertions(1);
+
     const mockedExec = exec as jest.Mock<Promise<number>>;
     mockedExec.mockImplementation(() => {
       return new Promise(reject => {
