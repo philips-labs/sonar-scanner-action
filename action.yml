@@ -14,5 +14,5 @@ inputs:
   url: Sonar Server url
   required: true
 runs:
-  using: node12
+  using: philipssoftware/sonar-scanner:4.3
   main: dist/index.js
