@@ -5,18 +5,20 @@ jest.mock('@actions/exec');
 
 describe('SonarQube Scanner Action', () => {
   beforeEach(() => {
-    process.env['INPUT_APP'] = 'HelloWorld';
+    process.env['INPUT_PROJECTNAME'] = 'HelloWorld';
+    process.env['INPUT_PROJECTKEY'] = 'key';
     process.env['INPUT_BASEDIR'] = 'src/';
     process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
     process.env['INPUT_URL'] = 'http://example.com';
   });
 
   it.each`
-    option             | value
-    ${'INPUT_BASEDIR'} | ${'baseDir'}
-    ${'INPUT_APP'}     | ${'app'}
-    ${'INPUT_TOKEN'}   | ${'token'}
-    ${'INPUT_URL'}     | ${'url'}
+    option                 | value
+    ${'INPUT_BASEDIR'}     | ${'baseDir'}
+    ${'INPUT_PROJECTNAME'} | ${'projectName'}
+    ${'INPUT_PROJECTKEY'}  | ${'projectKey'}
+    ${'INPUT_TOKEN'}       | ${'token'}
+    ${'INPUT_URL'}         | ${'url'}
   `(
     `should throw an error when the option $value is missing`,
     async ({ option, value }) => {
@@ -37,7 +39,7 @@ describe('SonarQube Scanner Action', () => {
       '-Dsonar.login="Dummy-Security-Token"',
       '-Dsonar.host.url="http://example.com"',
       '-Dsonar.projectBaseDir="src/"',
-      '-Dsonar.projectKey="HelloWorld"',
+      '-Dsonar.projectKey="key"',
       '-Dsonar.projectName="HelloWorld"',
       '-Dsonar.scm.provider=git',
       '-Dsonar.sourceEncoding=UTF-8',
