@@ -23,5 +23,4 @@ inputs:
     required: true
 runs:
   using: docker
-  image: philipssoftware/sonar-scanner:4.3
-  main: dist/index.js
+  image: docker://philipssoftware/sonar-scanner:4.3
