@@ -1,25 +1,25 @@
-name: SonarQube Scanner
-description: Static Analysis using SonarQube
-author: Patrick Mennen <patrick.mennen@philips.com>
+name: 'SonarQube Scanner'
+description: 'Static Analysis using SonarQube'
+author: 'Patrick Mennen <patrick.mennen@philips.com>'
 inputs:
   projectName:
-    description: Application name
+    description: 'Application name'
     required: true
 
   projectKey:
-    description: The project key in sonar
+    description: 'Sonar Project Key'
     required: true
 
   baseDir:
-    description: Project Base Directory
+    description: 'Project Base Directory'
     required: true
 
   token:
-    description: Sonar Login Token
+    description: 'Sonar Login Token'
     required: true
 
   url:
-    description: Sonar Server url
+    description: 'Sonar Server url'
     required: true
 runs:
   using: philipssoftware/sonar-scanner:4.3
