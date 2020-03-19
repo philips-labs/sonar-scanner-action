@@ -19,10 +19,10 @@ exports.sonarScanner = async () => {
     Using Configuration:
 
     ProjectName: ${projectName}
-    ProjectKey:  ${projectKey}
-    BaseDir:     ${baseDir}
-    Token:       ${token}
-    URL:         ${url}
+    ProjectKey : ${projectKey}
+    BaseDir    : ${baseDir}
+    Token      : ${token}
+    URL        : ${url}
   `);
     core.startGroup('Running SonarQube');
     const errorCode = await exec_1.exec('sonar-scanner', [
@@ -35,6 +35,7 @@ exports.sonarScanner = async () => {
         `-Dsonar.sourceEncoding=UTF-8`,
     ]);
     if (errorCode === 1) {
+        core.setFailed('SonarScanner failed.');
         throw new Error('SonarScanner failed');
     }
     core.endGroup();

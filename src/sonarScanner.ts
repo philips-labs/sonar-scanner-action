@@ -12,10 +12,10 @@ export const sonarScanner = async () => {
     Using Configuration:
 
     ProjectName: ${projectName}
-    ProjectKey:  ${projectKey}
-    BaseDir:     ${baseDir}
-    Token:       ${token}
-    URL:         ${url}
+    ProjectKey : ${projectKey}
+    BaseDir    : ${baseDir}
+    Token      : ${token}
+    URL        : ${url}
   `);
 
   core.startGroup('Running SonarQube');
@@ -30,6 +30,7 @@ export const sonarScanner = async () => {
   ]);
 
   if (errorCode === 1) {
+    core.setFailed('SonarScanner failed.');
     throw new Error('SonarScanner failed');
   }
 
