@@ -8,6 +8,16 @@ export const sonarScanner = async () => {
   const token = core.getInput('token', { required: true });
   const url = core.getInput('url', { required: true });
 
+  core.info(`
+    Using Configuration:
+
+    ProjectName: ${projectName}
+    ProjectKey:  ${projectKey}
+    BaseDir:     ${baseDir}
+    Token:       ${token}
+    URL:         ${url}
+  `);
+
   core.startGroup('Running SonarQube');
   const errorCode = await exec('sonar-scanner', [
     `-Dsonar.login=${token}`,
