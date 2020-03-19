@@ -26,8 +26,6 @@ inputs:
     required: true
 runs:
   using: docker
-  image: docker://philipssoftware/sonar-scanner:4.3
+  image: Dockerfile
   args:
-    - bash
-    - '-c'
-    - node /github/workflow/dist/index.js
+    - node /github/workflow/sonar-scanner-action/dist/index.js
