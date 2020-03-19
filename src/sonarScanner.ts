@@ -20,11 +20,11 @@ export const sonarScanner = async () => {
 
   core.startGroup('Running SonarQube');
   const errorCode = await exec('sonar-scanner', [
-    `-Dsonar.login="${token}"`,
+    `-Dsonar.login=${token}`,
     `-Dsonar.host.url=${url}`,
-    `-Dsonar.projectBaseDir="${baseDir}"`,
-    `-Dsonar.projectKey="${projectKey}"`,
-    `-Dsonar.projectName="${projectName}"`,
+    `-Dsonar.projectBaseDir=${baseDir}`,
+    `-Dsonar.projectKey=${projectKey}`,
+    `-Dsonar.projectName=${projectName}`,
     `-Dsonar.scm.provider=git`,
     `-Dsonar.sourceEncoding=UTF-8`,
   ]);

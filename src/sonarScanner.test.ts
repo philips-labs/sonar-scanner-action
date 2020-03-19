@@ -36,11 +36,11 @@ describe('SonarQube Scanner Action', () => {
   it('starts the action when all parameters are set', async () => {
     await sonarScanner();
     expect(exec).toHaveBeenCalledWith('sonar-scanner', [
-      '-Dsonar.login="Dummy-Security-Token"',
-      '-Dsonar.host.url="http://example.com"',
-      '-Dsonar.projectBaseDir="src/"',
-      '-Dsonar.projectKey="key"',
-      '-Dsonar.projectName="HelloWorld"',
+      '-Dsonar.login=Dummy-Security-Token',
+      '-Dsonar.host.url=http://example.com',
+      '-Dsonar.projectBaseDir=src/',
+      '-Dsonar.projectKey=key',
+      '-Dsonar.projectName=HelloWorld',
       '-Dsonar.scm.provider=git',
       '-Dsonar.sourceEncoding=UTF-8',
     ]);
