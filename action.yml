@@ -1,6 +1,9 @@
 name: 'SonarQube Scanner'
 description: 'Static Analysis using SonarQube'
 author: 'Patrick Mennen <patrick.mennen@philips.com>'
+branding: box
+color: green
+
 inputs:
   projectName:
     description: Application name
@@ -24,3 +27,7 @@ inputs:
 runs:
   using: docker
   image: docker://philipssoftware/sonar-scanner:4.3
+  args:
+    - bash
+    - '-c'
+    - node /github/workflow/dist/index.js
