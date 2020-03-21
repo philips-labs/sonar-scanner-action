@@ -1,8 +1,9 @@
-name: 'SonarQube Scanner'
-description: 'Static Analysis using SonarQube'
-author: 'Patrick Mennen <patrick.mennen@philips.com>'
-branding: box
-color: green
+name: "SonarQube Scanner"
+description: "Static Analysis using SonarQube"
+author: "Patrick Mennen <patrick.mennen@philips.com>"
+branding:
+  color: green
+  icon: box
 
 inputs:
   projectName:

@@ -25,7 +25,7 @@ sonarqube:
   steps:
     - uses: philips-labs/sonar-scanner-action@v1
       with:
-        app: Control Tower Backend
+        app: You app
         baseDir: .
         token: ${{ secrets.SONARQUBE_TOKEN }}
         projectName: Your Project Name
