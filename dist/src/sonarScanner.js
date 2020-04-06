@@ -6,8 +6,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(require("@actions/core"));
+const github_1 = __importDefault(require("@actions/github"));
 const exec_1 = require("@actions/exec");
 exports.sonarScanner = async () => {
     const projectName = core.getInput('projectName', { required: true });
@@ -15,6 +19,9 @@ exports.sonarScanner = async () => {
     const baseDir = core.getInput('baseDir', { required: true });
     const token = core.getInput('token', { required: true });
     const url = core.getInput('url', { required: true });
+    // Get the JSON webhook payload for the event that triggered the workflow
+    const payload = JSON.stringify(github_1.default.context.payload, undefined, 2);
+    console.log(`The event payload: ${payload}`);
     core.info(`
     Using Configuration:
 

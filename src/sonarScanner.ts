@@ -1,4 +1,5 @@
 import * as core from '@actions/core';
+import github from '@actions/github';
 import { exec } from '@actions/exec';
 
 export const sonarScanner = async () => {
@@ -7,6 +8,10 @@ export const sonarScanner = async () => {
   const baseDir = core.getInput('baseDir', { required: true });
   const token = core.getInput('token', { required: true });
   const url = core.getInput('url', { required: true });
+
+  // Get the JSON webhook payload for the event that triggered the workflow
+  const payload = JSON.stringify(github.context.payload, undefined, 2)
+  console.log(`The event payload: ${payload}`);
 
   core.info(`
     Using Configuration:
