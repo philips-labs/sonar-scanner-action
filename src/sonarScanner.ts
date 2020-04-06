@@ -9,10 +9,6 @@ export const sonarScanner = async () => {
   const token = core.getInput('token', { required: true });
   const url = core.getInput('url', { required: true });
 
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
-
   core.info(`
     Using Configuration:
 
