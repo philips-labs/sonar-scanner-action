@@ -2297,6 +2297,7 @@ const core = __importStar(__webpack_require__(470));
 const github_1 = __webpack_require__(469);
 const exec_1 = __webpack_require__(986);
 exports.sonarScanner = async () => {
+    console.log(JSON.stringify(github_1.context));
     const projectName = core.getInput('projectName', { required: true });
     const projectKey = core.getInput('projectKey', { required: true });
     const baseDir = core.getInput('baseDir', { required: true });
