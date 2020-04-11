@@ -27,7 +27,7 @@ inputs:
     description: 'Sonar Server url'
     required: true
 
-  scmPovider:
+  scmProvider:
     description: 'SCM provider'
     required: false
     default: 'git'
