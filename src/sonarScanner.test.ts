@@ -24,7 +24,6 @@ describe('SonarQube Scanner Action', () => {
 
   it.each`
     option                 | value
-    ${'INPUT_BASEDIR'}     | ${'baseDir'}
     ${'INPUT_PROJECTNAME'} | ${'projectName'}
     ${'INPUT_PROJECTKEY'}  | ${'projectKey'}
     ${'INPUT_TOKEN'}       | ${'token'}
