@@ -2297,7 +2297,6 @@ const core = __importStar(__webpack_require__(470));
 const github_1 = __webpack_require__(469);
 const exec_1 = __webpack_require__(986);
 exports.sonarScanner = async () => {
-    console.log(JSON.stringify(github_1.context));
     const projectName = core.getInput('projectName', { required: true });
     const projectKey = core.getInput('projectKey', { required: true });
     const baseDir = core.getInput('baseDir', { required: true });
@@ -7965,6 +7964,7 @@ var HttpCodes;
     HttpCodes[HttpCodes["RequestTimeout"] = 408] = "RequestTimeout";
     HttpCodes[HttpCodes["Conflict"] = 409] = "Conflict";
     HttpCodes[HttpCodes["Gone"] = 410] = "Gone";
+    HttpCodes[HttpCodes["TooManyRequests"] = 429] = "TooManyRequests";
     HttpCodes[HttpCodes["InternalServerError"] = 500] = "InternalServerError";
     HttpCodes[HttpCodes["NotImplemented"] = 501] = "NotImplemented";
     HttpCodes[HttpCodes["BadGateway"] = 502] = "BadGateway";
@@ -9864,18 +9864,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sonarScanner_1 = __webpack_require__(82);
 const core = __importStar(__webpack_require__(470));
-const github_1 = __importDefault(__webpack_require__(469));
 async function run() {
     try {
-        // Get the JSON webhook payload for the event that triggered the workflow
-        const payload = JSON.stringify(github_1.default.context.payload);
-        console.log(`The event payload: ${payload}`);
         await sonarScanner_1.sonarScanner();
     }
     catch (error) {

@@ -3,8 +3,6 @@ import { context } from '@actions/github';
 import { exec } from '@actions/exec';
 
 export const sonarScanner = async () => {
-  console.log(JSON.stringify(context));
-
   const projectName = core.getInput('projectName', { required: true });
   const projectKey = core.getInput('projectKey', { required: true });
   const baseDir = core.getInput('baseDir', { required: true });
