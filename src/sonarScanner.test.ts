@@ -1,7 +1,14 @@
 import { sonarScanner } from './sonarScanner';
 import { exec } from '@actions/exec';
+import { context } from '@actions/github';
 
 jest.mock('@actions/exec');
+jest.mock('@actions/github', () => ({
+  ...jest.requireActual('@actions/github'),
+  context: {
+    payload: {},
+  },
+}));
 
 describe('SonarQube Scanner Action', () => {
   beforeEach(() => {
@@ -10,6 +17,9 @@ describe('SonarQube Scanner Action', () => {
     process.env['INPUT_BASEDIR'] = 'src/';
     process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
     process.env['INPUT_URL'] = 'http://example.com';
+    process.env['INPUT_SCMPROVIDER'] = 'git';
+    process.env['INPUT_SOURCEENCODING'] = 'UTF-8';
+    process.env['INPUT_ENABLEPULLREQUESTDECORATION'] = 'false';
   });
 
   it.each`
@@ -51,7 +61,7 @@ describe('SonarQube Scanner Action', () => {
 
     const mockedExec = exec as jest.Mock<Promise<number>>;
     mockedExec.mockImplementation(() => {
-      return new Promise(reject => {
+      return new Promise((reject) => {
         reject(1);
       });
     });

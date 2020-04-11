@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import github from '@actions/github';
+import { context } from '@actions/github';
 import { exec } from '@actions/exec';
 
 export const sonarScanner = async () => {
@@ -8,27 +8,52 @@ export const sonarScanner = async () => {
   const baseDir = core.getInput('baseDir', { required: true });
   const token = core.getInput('token', { required: true });
   const url = core.getInput('url', { required: true });
+  const scmProvider = core.getInput('scmProvider', { required: true });
+  const sourceEncoding = core.getInput('sourceEncoding', { required: true });
+  const enablePullRequestDecoration = JSON.parse(
+    core.getInput('enablePullRequestDecoration', { required: true }),
+  );
 
-  core.info(`
-    Using Configuration:
-
-    ProjectName: ${projectName}
-    ProjectKey : ${projectKey}
-    BaseDir    : ${baseDir}
-    Token      : ${token}
-    URL        : ${url}
-  `);
-
-  core.startGroup('Running SonarQube');
-  const errorCode = await exec('sonar-scanner', [
+  const sonarParameters: string[] = [
     `-Dsonar.login=${token}`,
     `-Dsonar.host.url=${url}`,
     `-Dsonar.projectBaseDir=${baseDir}`,
     `-Dsonar.projectKey=${projectKey}`,
     `-Dsonar.projectName=${projectName}`,
-    `-Dsonar.scm.provider=git`,
-    `-Dsonar.sourceEncoding=UTF-8`,
-  ]);
+    `-Dsonar.scm.provider=${scmProvider}`,
+    `-Dsonar.sourceEncoding=${sourceEncoding}`,
+  ];
+
+  core.info(`
+    Using Configuration:
+
+    ProjectName                 : ${projectName}
+    ProjectKey                  : ${projectKey}
+    BaseDir                     : ${baseDir}
+    Token                       : ${token}
+    URL                         : ${url}
+    scmProvider                 : ${scmProvider}
+    sourceEncoding              : ${sourceEncoding}
+    enablePullRequestDecoration : ${enablePullRequestDecoration}
+  `);
+
+  const pr: any = context.payload.pull_request;
+  if (enablePullRequestDecoration && pr) {
+    core.info(`
+    -- Configuration for pull request decoration:
+       Pull request number       : ${pr.number}
+       Pull request branch       : ${pr.base.ref}
+       Pull request base branch  : ${pr.head.ref}
+    `);
+
+    sonarParameters.push(`-Dsonar.pullrequest.number=${pr.number}`);
+    sonarParameters.push(`-Dsonar.pullrequest.base=${pr.base.ref}`);
+    sonarParameters.push(`-Dsonar.pullrequest.branch=${pr.head.ref}`);
+  }
+
+  core.startGroup('Running SonarQube');
+  core.debug('Running SonarQube with parameters: ${sonarParameters}');
+  const errorCode = await exec('sonar-scanner', sonarParameters);
 
   if (errorCode === 1) {
     core.setFailed('SonarScanner failed.');
