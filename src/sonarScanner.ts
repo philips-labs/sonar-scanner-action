@@ -46,7 +46,7 @@ export const sonarScanner = async () => {
        Pull request base branch  : ${pr.head.ref}
     `);
 
-    sonarParameters.push(`-Dsonar.pullrequest.number=${pr.number}`);
+    sonarParameters.push(`-Dsonar.pullrequest.key=${pr.number}`);
     sonarParameters.push(`-Dsonar.pullrequest.base=${pr.base.ref}`);
     sonarParameters.push(`-Dsonar.pullrequest.branch=${pr.head.ref}`);
   }

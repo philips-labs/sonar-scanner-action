@@ -50,7 +50,7 @@ describe('SonarQube Scanner Action for a Pull Request', () => {
       '-Dsonar.projectName=HelloWorld',
       '-Dsonar.scm.provider=git',
       '-Dsonar.sourceEncoding=UTF-8',
-      '-Dsonar.pullrequest.number=101',
+      '-Dsonar.pullrequest.key=101',
       '-Dsonar.pullrequest.base=master',
       '-Dsonar.pullrequest.branch=feature/featureX',
     ]);
