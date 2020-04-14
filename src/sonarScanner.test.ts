@@ -59,11 +59,7 @@ describe('SonarQube Scanner Action', () => {
     expect.assertions(1);
 
     const mockedExec = exec as jest.Mock<Promise<number>>;
-    mockedExec.mockImplementation(() => {
-      return new Promise((reject) => {
-        reject(1);
-      });
-    });
+    mockedExec.mockRejectedValue(1);
 
     try {
       await sonarScanner();
