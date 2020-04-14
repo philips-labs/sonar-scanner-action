@@ -17,9 +17,3 @@ jobs:
         run: yarn test
       - name: Build distribution
         run: yarn build
-      - name: Check dist is up to date
-        run: |
-          ls -la
-          ls -la .github
-          changes=$(git status -s --porcelain --untracked-files=no | wc -l)
-          [ $changes -gt 0 ] && exit 1
