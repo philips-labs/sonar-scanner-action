@@ -7,12 +7,6 @@ jest.mock('@actions/exec');
 jest.mock('@actions/github', () => ({
   ...jest.requireActual('@actions/github'),
   context: {
-    payload: {},
-  },
-}));
-jest.mock('@actions/github', () => ({
-  ...jest.requireActual('@actions/github'),
-  context: {
     payload: {
       pull_request: {
         number: 101,
