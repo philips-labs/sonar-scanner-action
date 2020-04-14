@@ -2299,10 +2299,10 @@ const exec_1 = __webpack_require__(986);
 exports.sonarScanner = async () => {
     const projectName = core.getInput('projectName', { required: true });
     const projectKey = core.getInput('projectKey', { required: true });
-    const baseDir = core.getInput('baseDir', { required: false });
+    const baseDir = core.getInput('baseDir', { required: true });
     const token = core.getInput('token', { required: true });
     const url = core.getInput('url', { required: true });
-    const scmProvider = core.getInput('scmProvider', { required: false });
+    const scmProvider = core.getInput('scmProvider', { required: true });
     const sourceEncoding = core.getInput('sourceEncoding', { required: false });
     const enablePullRequestDecoration = JSON.parse(core.getInput('enablePullRequestDecoration', { required: false }));
     const sonarParameters = [
@@ -3970,6 +3970,7 @@ exports.RequestError = RequestError;
 // ignored, since we can never get coverage for them.
 var assert = __webpack_require__(357)
 var signals = __webpack_require__(654)
+var isWin = /^win/i.test(process.platform)
 
 var EE = __webpack_require__(614)
 /* istanbul ignore if */
@@ -4059,6 +4060,11 @@ signals.forEach(function (sig) {
       /* istanbul ignore next */
       emit('afterexit', null, sig)
       /* istanbul ignore next */
+      if (isWin && sig === 'SIGHUP') {
+        // "SIGHUP" throws an `ENOSYS` error on Windows,
+        // so use a supported signal instead
+        sig = 'SIGINT'
+      }
       process.kill(process.pid, sig)
     }
   }
@@ -9967,7 +9973,7 @@ var isPlainObject = _interopDefault(__webpack_require__(548));
 var nodeFetch = _interopDefault(__webpack_require__(454));
 var requestError = __webpack_require__(257);
 
-const VERSION = "5.3.4";
+const VERSION = "5.4.0";
 
 function getBufferResponse(response) {
   return response.arrayBuffer();
