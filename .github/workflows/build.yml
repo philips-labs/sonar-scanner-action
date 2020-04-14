@@ -9,6 +9,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          depth: 0
       - name: Install dependencies
         run: yarn install
       - name: Run tests
@@ -17,5 +19,7 @@ jobs:
         run: yarn build
       - name: Check dist is up to date
         run: |
+          ls -la
+          ls -la .github
           changes=$(git status -s --porcelain --untracked-files=no | wc -l)
           [ $changes -gt 0 ] && exit 1
