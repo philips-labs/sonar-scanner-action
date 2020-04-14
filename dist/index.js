@@ -2296,6 +2296,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const github_1 = __webpack_require__(469);
 const exec_1 = __webpack_require__(986);
+jest.mock('@actions/github', () => ({
+    ...jest.requireActual('@actions/github'),
+    context: {
+        payload: {
+            pull_request: {
+                number: 101,
+                base: {
+                    ref: 'master',
+                },
+                head: {
+                    ref: 'feature/featureX',
+                },
+            },
+        },
+    },
+}));
 exports.sonarScanner = async () => {
     const projectName = core.getInput('projectName', { required: true });
     const projectKey = core.getInput('projectKey', { required: true });
@@ -2339,7 +2355,7 @@ exports.sonarScanner = async () => {
         sonarParameters.push(`-Dsonar.pullrequest.branch=${pr.head.ref}`);
     }
     core.startGroup('Running SonarQube');
-    core.debug('Running SonarQube with parameters: ${sonarParameters}');
+    core.debug(`Running SonarQube with parameters: ${sonarParameters.join(', ')}`);
     const errorCode = await exec_1.exec('sonar-scanner', sonarParameters);
     if (errorCode === 1) {
         core.setFailed('SonarScanner failed.');
@@ -2347,6 +2363,46 @@ exports.sonarScanner = async () => {
     }
     core.endGroup();
 };
+describe('SonarQube Scanner Action for a Pull Request', () => {
+    beforeEach(() => {
+        process.env['INPUT_PROJECTNAME'] = 'HelloWorld';
+        process.env['INPUT_PROJECTKEY'] = 'key';
+        process.env['INPUT_BASEDIR'] = '.';
+        process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
+        process.env['INPUT_URL'] = 'http://example.com';
+        process.env['INPUT_SCMPROVIDER'] = 'git';
+        process.env['INPUT_SOURCEENCODING'] = 'UTF-8';
+    });
+    it('starts the action for pull request decoration.', async () => {
+        process.env['INPUT_ENABLEPULLREQUESTDECORATION'] = 'true';
+        await exports.sonarScanner();
+        expect(exec_1.exec).toHaveBeenCalledWith('sonar-scanner', [
+            '-Dsonar.login=Dummy-Security-Token',
+            '-Dsonar.host.url=http://example.com',
+            '-Dsonar.projectBaseDir=.',
+            '-Dsonar.projectKey=key',
+            '-Dsonar.projectName=HelloWorld',
+            '-Dsonar.scm.provider=git',
+            '-Dsonar.sourceEncoding=UTF-8',
+            '-Dsonar.pullrequest.key=101',
+            '-Dsonar.pullrequest.base=master',
+            '-Dsonar.pullrequest.branch=feature/featureX',
+        ]);
+    });
+    it('starts the action for pull request without decoration.', async () => {
+        process.env['INPUT_ENABLEPULLREQUESTDECORATION'] = 'false';
+        await exports.sonarScanner();
+        expect(exec_1.exec).toHaveBeenCalledWith('sonar-scanner', [
+            '-Dsonar.login=Dummy-Security-Token',
+            '-Dsonar.host.url=http://example.com',
+            '-Dsonar.projectBaseDir=.',
+            '-Dsonar.projectKey=key',
+            '-Dsonar.projectName=HelloWorld',
+            '-Dsonar.scm.provider=git',
+            '-Dsonar.sourceEncoding=UTF-8',
+        ]);
+    });
+});
 
 
 /***/ }),

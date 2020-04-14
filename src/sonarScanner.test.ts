@@ -1,6 +1,5 @@
 import { sonarScanner } from './sonarScanner';
 import { exec } from '@actions/exec';
-import { context } from '@actions/github';
 
 jest.mock('@actions/exec');
 jest.mock('@actions/github', () => ({
@@ -12,6 +11,8 @@ jest.mock('@actions/github', () => ({
 
 describe('SonarQube Scanner Action', () => {
   beforeEach(() => {
+    jest.resetAllMocks();
+
     process.env['INPUT_PROJECTNAME'] = 'HelloWorld';
     process.env['INPUT_PROJECTKEY'] = 'key';
     process.env['INPUT_BASEDIR'] = 'src/';
@@ -59,7 +60,11 @@ describe('SonarQube Scanner Action', () => {
     expect.assertions(1);
 
     const mockedExec = exec as jest.Mock<Promise<number>>;
-    mockedExec.mockRejectedValue(1);
+    mockedExec.mockImplementation(() => {
+      return new Promise((reject) => {
+        reject(1);
+      });
+    });
 
     try {
       await sonarScanner();

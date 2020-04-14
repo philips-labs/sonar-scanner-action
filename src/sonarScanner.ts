@@ -69,7 +69,9 @@ export const sonarScanner = async () => {
   }
 
   core.startGroup('Running SonarQube');
-  core.debug('Running SonarQube with parameters: ${sonarParameters}');
+  core.debug(
+    `Running SonarQube with parameters: ${sonarParameters.join(', ')}`,
+  );
   const errorCode = await exec('sonar-scanner', sonarParameters);
 
   if (errorCode === 1) {
