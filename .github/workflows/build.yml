@@ -1,4 +1,4 @@
-name: "build-test"
+name: 'build-test'
 on:
   push:
 
@@ -9,8 +9,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          depth: 0
       - name: Install dependencies
         run: yarn install
       - name: Run tests
