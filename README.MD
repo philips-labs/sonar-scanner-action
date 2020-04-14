@@ -11,7 +11,7 @@ A Github action for running static analysis on your codebase using SonarQube ins
 | baseDir                     | Relative path to your sonar.properties file (default: `.`)               | no       | `.`     |
 | token                       | SonarQube login token                                                    | yes      |         |
 | url                         | SonarQube server url                                                     | yes      |         |
-| scmPovider                  | SCM provider                                                             | no       | `git`   |
+| scmProvider                 | SCM provider                                                             | no       | `git`   |
 | sourceEncoding              | Encoding of the source files                                             | no       | `UTF-8` |
 | enablePullRequestDecoration | Decorate a pull request. PR, branch and base are extracted from the pull | no       | `false` |
 
