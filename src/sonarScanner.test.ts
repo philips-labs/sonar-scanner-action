@@ -15,7 +15,6 @@ describe('SonarQube Scanner Action', () => {
     jest.resetAllMocks();
     process.env['INPUT_PROJECTNAME'] = 'HelloWorld';
     process.env['INPUT_PROJECTKEY'] = 'key';
-    process.env['INPUT_BASEDIR'] = 'src/';
     process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
     process.env['INPUT_URL'] = 'http://example.com';
     process.env['INPUT_SCMPROVIDER'] = 'git';
