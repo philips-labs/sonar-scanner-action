@@ -2363,7 +2363,7 @@ exports.sonarScanner = async () => {
     }
     else {
         core.info('Skipping running scanner.');
-        core.setOutput('sonarParameters', sonarParameters.join(','));
+        core.setOutput('sonarParameters', sonarParameters.join(' '));
     }
 };
 
