@@ -29,7 +29,7 @@ export const sonarScanner = async () => {
     `-Dsonar.sourceEncoding=${sourceEncoding}`,
   ];
 
-  if (baseDir != undefined || baseDir != '') {
+  if (baseDir && baseDir.length > 0) {
     sonarParameters.push(`-Dsonar.projectBaseDir=${baseDir}`);
   }
 

@@ -2318,7 +2318,7 @@ exports.sonarScanner = async () => {
         `-Dsonar.scm.provider=${scmProvider}`,
         `-Dsonar.sourceEncoding=${sourceEncoding}`,
     ];
-    if (baseDir != undefined || baseDir != '') {
+    if (baseDir && baseDir.length > 0) {
         sonarParameters.push(`-Dsonar.projectBaseDir=${baseDir}`);
     }
     core.info(`
