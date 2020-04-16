@@ -25,7 +25,7 @@ export const sonarScanner = async () => {
     `-Dsonar.host.url=${url}`,
     `-Dsonar.projectBaseDir=${baseDir}`,
     `-Dsonar.projectKey=${projectKey}`,
-    `-Dsonar.projectName=${projectName}`,
+    `-Dsonar.projectName="${projectName}"`,
     `-Dsonar.scm.provider=${scmProvider}`,
     `-Dsonar.sourceEncoding=${sourceEncoding}`,
   ];
