@@ -17,7 +17,6 @@ inputs:
   baseDir:
     description: "Project Base Directory"
     required: false
-    default: "."
 
   token:
     description: "Sonar Login Token"

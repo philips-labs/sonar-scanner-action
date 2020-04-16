@@ -2313,12 +2313,14 @@ exports.sonarScanner = async () => {
     const sonarParameters = [
         `-Dsonar.login=${token}`,
         `-Dsonar.host.url=${url}`,
-        `-Dsonar.projectBaseDir=${baseDir}`,
         `-Dsonar.projectKey=${projectKey}`,
         `-Dsonar.projectName=\'${projectName}\'`,
         `-Dsonar.scm.provider=${scmProvider}`,
         `-Dsonar.sourceEncoding=${sourceEncoding}`,
     ];
+    if (baseDir != undefined) {
+        sonarParameters.push(`-Dsonar.projectBaseDir=${baseDir}`);
+    }
     core.info(`
     Using Configuration:
 
