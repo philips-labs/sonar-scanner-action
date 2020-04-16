@@ -20,6 +20,7 @@ describe('SonarQube Scanner Action', () => {
     process.env['INPUT_URL'] = 'http://example.com';
     process.env['INPUT_SCMPROVIDER'] = 'git';
     process.env['INPUT_SOURCEENCODING'] = 'UTF-8';
+    process.env['INPUT_SONARCOMMAND'] = 'sonar-scanner';
     process.env['INPUT_ENABLEPULLREQUESTDECORATION'] = 'false';
   });
 
@@ -57,6 +58,22 @@ describe('SonarQube Scanner Action', () => {
     ]);
   });
 
+  it('starts the action when all parameters are set for a custom command', async () => {
+    process.env['INPUT_SONARCOMMAND'] = './gradlew sonarQube';
+
+    await sonarScanner();
+    expect(exec).toHaveBeenCalledWith('./gradlew sonarQube', [
+      '-Dsonar.login=Dummy-Security-Token',
+      '-Dsonar.host.url=http://example.com',
+      '-Dsonar.projectBaseDir=src/',
+      '-Dsonar.projectKey=key',
+      '-Dsonar.projectName=HelloWorld',
+      '-Dsonar.scm.provider=git',
+      '-Dsonar.sourceEncoding=UTF-8',
+      '-Dsonar.branch.name=develop',
+    ]);
+  });
+
   it('throws an error when SonarQube fails', async () => {
     expect.assertions(1);
 
@@ -72,18 +89,5 @@ describe('SonarQube Scanner Action', () => {
     } catch (e) {
       expect(e.message).toBe('SonarScanner failed');
     }
-  });
-
-  describe('Pull Request', () => {
-    beforeEach(() => {
-      jest.resetModules();
-      process.env['INPUT_PROJECTNAME'] = 'HelloWorld';
-      process.env['INPUT_PROJECTKEY'] = 'key';
-      process.env['INPUT_BASEDIR'] = '.';
-      process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
-      process.env['INPUT_URL'] = 'http://example.com';
-      process.env['INPUT_SCMPROVIDER'] = 'git';
-      process.env['INPUT_SOURCEENCODING'] = 'UTF-8';
-    });
   });
 });

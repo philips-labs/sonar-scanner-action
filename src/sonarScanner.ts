@@ -18,6 +18,7 @@ export const sonarScanner = async () => {
   const enablePullRequestDecoration = JSON.parse(
     core.getInput('enablePullRequestDecoration', { required: false }),
   );
+  const sonarCommand = core.getInput('sonarCommand', { required: false });
 
   const sonarParameters: string[] = [
     `-Dsonar.login=${token}`,
@@ -69,7 +70,7 @@ export const sonarScanner = async () => {
   core.debug(
     `Running SonarQube with parameters: ${sonarParameters.join(', ')}`,
   );
-  const errorCode = await exec('sonar-scanner', sonarParameters);
+  const errorCode = await exec(sonarCommand, sonarParameters);
 
   if (errorCode === 1) {
     core.setFailed('SonarScanner failed.');

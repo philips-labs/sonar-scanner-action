@@ -1,44 +1,48 @@
-name: 'SonarQube Scanner'
-description: 'Static Analysis using SonarQube'
-author: 'Forest Keepers'
+name: "SonarQube Scanner"
+description: "Static Analysis using SonarQube"
+author: "Forest Keepers"
 branding:
-  icon: 'activity'
-  color: 'green'
+  icon: "activity"
+  color: "green"
 
 inputs:
   projectName:
-    description: 'Sonar Project name'
+    description: "Sonar Project name"
     required: true
 
   projectKey:
-    description: 'Sonar Project Key'
+    description: "Sonar Project Key"
     required: true
 
   baseDir:
-    description: 'Project Base Directory'
+    description: "Project Base Directory"
     required: false
-    default: '.'
+    default: "."
 
   token:
-    description: 'Sonar Login Token'
+    description: "Sonar Login Token"
     required: true
 
   url:
-    description: 'Sonar Server url'
+    description: "Sonar Server url"
     required: true
 
   scmProvider:
-    description: 'SCM provider'
+    description: "SCM provider"
     required: false
-    default: 'git'
+    default: "git"
 
   sourceEncoding:
-    description: 'Encoding of the source files'
+    description: "Encoding of the source files"
     required: false
-    default: 'UTF-8'
+    default: "UTF-8"
+
+  sonarCommand:
+    required: false
+    default: "sonar-scanner"
 
   enablePullRequestDecoration:
-    description: 'Decorate a pull request. PR, branch and base are extracted from the pull request event'
+    description: "Decorate a pull request. PR, branch and base are extracted from the pull request event"
     required: false
 
 runs:
