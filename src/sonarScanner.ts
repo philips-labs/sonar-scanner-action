@@ -14,6 +14,11 @@ export const sonarScanner = async () => {
     core.getInput('enablePullRequestDecoration', { required: false }),
   );
 
+  function getBranchOrTagName(githubRef: string): string {
+    const githubRefParts = githubRef.split('/');
+    return githubRefParts[githubRefParts.length - 1];
+  }
+
   const sonarParameters: string[] = [
     `-Dsonar.login=${token}`,
     `-Dsonar.host.url=${url}`,
@@ -38,6 +43,14 @@ export const sonarScanner = async () => {
   `);
 
   const pr: any = context.payload.pull_request;
+  if (!pr) {
+    const branchName = getBranchOrTagName(context.ref);
+    sonarParameters.push(`-Dsonar.branch.name=${branchName}`);
+    core.info(`
+    -- Configuration for branch:
+       branchName               : ${branchName}
+    `);
+  }
 
   if (enablePullRequestDecoration && pr) {
     core.info(`
