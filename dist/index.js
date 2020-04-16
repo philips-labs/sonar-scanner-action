@@ -2362,6 +2362,7 @@ exports.sonarScanner = async () => {
         core.endGroup();
     }
     else {
+        core.info('Skipping running scanner.');
         core.setOutput('sonarParameters', sonarParameters.join(','));
     }
 };
