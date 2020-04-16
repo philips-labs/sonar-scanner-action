@@ -2305,6 +2305,10 @@ exports.sonarScanner = async () => {
     const scmProvider = core.getInput('scmProvider', { required: true });
     const sourceEncoding = core.getInput('sourceEncoding', { required: false });
     const enablePullRequestDecoration = JSON.parse(core.getInput('enablePullRequestDecoration', { required: false }));
+    function getBranchOrTagName(githubRef) {
+        const githubRefParts = githubRef.split('/');
+        return githubRefParts[githubRefParts.length - 1];
+    }
     const sonarParameters = [
         `-Dsonar.login=${token}`,
         `-Dsonar.host.url=${url}`,
@@ -2327,6 +2331,14 @@ exports.sonarScanner = async () => {
     enablePullRequestDecoration : ${enablePullRequestDecoration}
   `);
     const pr = github_1.context.payload.pull_request;
+    if (!pr) {
+        const branchName = getBranchOrTagName(github_1.context.ref);
+        sonarParameters.push(`-Dsonar.branch.name=${branchName}`);
+        core.info(`
+    -- Configuration for branch:
+       branchName               : ${branchName}
+    `);
+    }
     if (enablePullRequestDecoration && pr) {
         core.info(`
     -- Configuration for pull request decoration:
