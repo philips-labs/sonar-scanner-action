@@ -2309,6 +2309,7 @@ exports.sonarScanner = async () => {
     const scmProvider = core.getInput('scmProvider', { required: true });
     const sourceEncoding = core.getInput('sourceEncoding', { required: false });
     const enablePullRequestDecoration = JSON.parse(core.getInput('enablePullRequestDecoration', { required: false }));
+    const sonarCommand = core.getInput('sonarCommand', { required: false });
     const sonarParameters = [
         `-Dsonar.login=${token}`,
         `-Dsonar.host.url=${url}`,
@@ -2352,7 +2353,7 @@ exports.sonarScanner = async () => {
     }
     core.startGroup('Running SonarQube');
     core.debug(`Running SonarQube with parameters: ${sonarParameters.join(', ')}`);
-    const errorCode = await exec_1.exec('sonar-scanner', sonarParameters);
+    const errorCode = await exec_1.exec(sonarCommand, sonarParameters);
     if (errorCode === 1) {
         core.setFailed('SonarScanner failed.');
         throw new Error('SonarScanner failed');
