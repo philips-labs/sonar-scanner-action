@@ -2,19 +2,29 @@ import { sonarScanner } from './sonarScanner';
 import { exec } from '@actions/exec';
 
 jest.mock('@actions/exec');
+jest.mock('@actions/github', () => ({
+  ...jest.requireActual('@actions/github'),
+  context: {
+    ref: 'refs/head/develop',
+    payload: {},
+  },
+}));
 
 describe('SonarQube Scanner Action', () => {
   beforeEach(() => {
+    jest.resetAllMocks();
     process.env['INPUT_PROJECTNAME'] = 'HelloWorld';
     process.env['INPUT_PROJECTKEY'] = 'key';
     process.env['INPUT_BASEDIR'] = 'src/';
     process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
     process.env['INPUT_URL'] = 'http://example.com';
+    process.env['INPUT_SCMPROVIDER'] = 'git';
+    process.env['INPUT_SOURCEENCODING'] = 'UTF-8';
+    process.env['INPUT_ENABLEPULLREQUESTDECORATION'] = 'false';
   });
 
   it.each`
     option                 | value
-    ${'INPUT_BASEDIR'}     | ${'baseDir'}
     ${'INPUT_PROJECTNAME'} | ${'projectName'}
     ${'INPUT_PROJECTKEY'}  | ${'projectKey'}
     ${'INPUT_TOKEN'}       | ${'token'}
@@ -43,6 +53,7 @@ describe('SonarQube Scanner Action', () => {
       '-Dsonar.projectName=HelloWorld',
       '-Dsonar.scm.provider=git',
       '-Dsonar.sourceEncoding=UTF-8',
+      '-Dsonar.branch.name=develop',
     ]);
   });
 
@@ -51,7 +62,7 @@ describe('SonarQube Scanner Action', () => {
 
     const mockedExec = exec as jest.Mock<Promise<number>>;
     mockedExec.mockImplementation(() => {
-      return new Promise(reject => {
+      return new Promise((reject) => {
         reject(1);
       });
     });
@@ -61,5 +72,18 @@ describe('SonarQube Scanner Action', () => {
     } catch (e) {
       expect(e.message).toBe('SonarScanner failed');
     }
+  });
+
+  describe('Pull Request', () => {
+    beforeEach(() => {
+      jest.resetModules();
+      process.env['INPUT_PROJECTNAME'] = 'HelloWorld';
+      process.env['INPUT_PROJECTKEY'] = 'key';
+      process.env['INPUT_BASEDIR'] = '.';
+      process.env['INPUT_TOKEN'] = 'Dummy-Security-Token';
+      process.env['INPUT_URL'] = 'http://example.com';
+      process.env['INPUT_SCMPROVIDER'] = 'git';
+      process.env['INPUT_SOURCEENCODING'] = 'UTF-8';
+    });
   });
 });

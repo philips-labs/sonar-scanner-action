@@ -4,17 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "test": "jest"
+    "build": "ncc build index.ts -o dist",
+    "test": "jest --no-cache",
+    "test:watch": "jest --watch --watchAll"
   },
   "dependencies": {
-    "@actions/core": "^1.2.2",
-    "@actions/exec": "^1.0.3"
+    "@actions/core": "^1.2.3",
+    "@actions/exec": "^1.0.3",
+    "@actions/github": "^2.1.1"
   },
   "devDependencies": {
     "@types/jest": "^25.1.0",
     "@types/node": "^13.5.1",
+    "@zeit/ncc": "^0.22.1",
     "jest": "^25.1.0",
+    "jest-cli": "^25.3.0",
     "ts-jest": "^25.0.0",
     "typescript": "^3.7.5"
   }

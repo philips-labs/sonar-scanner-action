@@ -1,17 +1,17 @@
-name: "build-test"
+name: 'build-test'
 on:
   push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x, 13.x]
+    container: philipssoftware/sonar-scanner:4.3
 
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
-      - run: yarn test
-      - run: yarn build
+      - name: Install dependencies
+        run: yarn install
+      - name: Run tests
+        run: yarn test
+      - name: Build distribution
+        run: yarn build
