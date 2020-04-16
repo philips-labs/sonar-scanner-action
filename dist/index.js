@@ -2309,6 +2309,7 @@ exports.sonarScanner = async () => {
     const scmProvider = core.getInput('scmProvider', { required: true });
     const sourceEncoding = core.getInput('sourceEncoding', { required: false });
     const enablePullRequestDecoration = JSON.parse(core.getInput('enablePullRequestDecoration', { required: false }));
+    const onlyConfig = core.getInput('onlyConfig', { required: false });
     const sonarParameters = [
         `-Dsonar.login=${token}`,
         `-Dsonar.host.url=${url}`,
@@ -2350,14 +2351,19 @@ exports.sonarScanner = async () => {
         sonarParameters.push(`-Dsonar.pullrequest.base=${pr.base.ref}`);
         sonarParameters.push(`-Dsonar.pullrequest.branch=${pr.head.ref}`);
     }
-    core.startGroup('Running SonarQube');
-    core.debug(`Running SonarQube with parameters: ${sonarParameters.join(', ')}`);
-    const errorCode = await exec_1.exec('sonar-scanner', sonarParameters);
-    if (errorCode === 1) {
-        core.setFailed('SonarScanner failed.');
-        throw new Error('SonarScanner failed');
+    if (!onlyConfig) {
+        core.startGroup('Running SonarQube');
+        core.debug(`Running SonarQube with parameters: ${sonarParameters.join(', ')}`);
+        const errorCode = await exec_1.exec('sonar-scanner', sonarParameters);
+        if (errorCode === 1) {
+            core.setFailed('SonarScanner failed.');
+            throw new Error('SonarScanner failed');
+        }
+        core.endGroup();
     }
-    core.endGroup();
+    else {
+        core.setOutput('sonarParameters', sonarParameters.join(','));
+    }
 };
 
 

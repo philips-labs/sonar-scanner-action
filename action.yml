@@ -41,6 +41,13 @@ inputs:
     description: 'Decorate a pull request. PR, branch and base are extracted from the pull request event'
     required: false
 
+  onlyConfig
+    required: false
+    default: false
+
+outputs:
+  sonarParamters:
+
 runs:
   using: docker
   image: Dockerfile

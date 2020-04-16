@@ -18,6 +18,7 @@ export const sonarScanner = async () => {
   const enablePullRequestDecoration = JSON.parse(
     core.getInput('enablePullRequestDecoration', { required: false }),
   );
+  const onlyConfig = core.getInput('onlyConfig', { required: false });
 
   const sonarParameters: string[] = [
     `-Dsonar.login=${token}`,
@@ -65,16 +66,20 @@ export const sonarScanner = async () => {
     sonarParameters.push(`-Dsonar.pullrequest.branch=${pr.head.ref}`);
   }
 
-  core.startGroup('Running SonarQube');
-  core.debug(
-    `Running SonarQube with parameters: ${sonarParameters.join(', ')}`,
-  );
-  const errorCode = await exec('sonar-scanner', sonarParameters);
+  if (!onlyConfig) {
+    core.startGroup('Running SonarQube');
+    core.debug(
+      `Running SonarQube with parameters: ${sonarParameters.join(', ')}`,
+    );
+    const errorCode = await exec('sonar-scanner', sonarParameters);
 
-  if (errorCode === 1) {
-    core.setFailed('SonarScanner failed.');
-    throw new Error('SonarScanner failed');
+    if (errorCode === 1) {
+      core.setFailed('SonarScanner failed.');
+      throw new Error('SonarScanner failed');
+    }
+
+    core.endGroup();
+  } else {
+    core.setOutput('sonarParameters', sonarParameters.join(','));
   }
-
-  core.endGroup();
 };
