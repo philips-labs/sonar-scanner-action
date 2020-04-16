@@ -2296,6 +2296,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const github_1 = __webpack_require__(469);
 const exec_1 = __webpack_require__(986);
+function getBranchOrTagName(githubRef) {
+    const githubRefParts = githubRef.split('/');
+    return githubRefParts[githubRefParts.length - 1];
+}
 exports.sonarScanner = async () => {
     const projectName = core.getInput('projectName', { required: true });
     const projectKey = core.getInput('projectKey', { required: true });
@@ -2305,10 +2309,6 @@ exports.sonarScanner = async () => {
     const scmProvider = core.getInput('scmProvider', { required: true });
     const sourceEncoding = core.getInput('sourceEncoding', { required: false });
     const enablePullRequestDecoration = JSON.parse(core.getInput('enablePullRequestDecoration', { required: false }));
-    function getBranchOrTagName(githubRef) {
-        const githubRefParts = githubRef.split('/');
-        return githubRefParts[githubRefParts.length - 1];
-    }
     const sonarParameters = [
         `-Dsonar.login=${token}`,
         `-Dsonar.host.url=${url}`,

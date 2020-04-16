@@ -2,6 +2,11 @@ import * as core from '@actions/core';
 import { context } from '@actions/github';
 import { exec } from '@actions/exec';
 
+function getBranchOrTagName(githubRef: string): string {
+  const githubRefParts = githubRef.split('/');
+  return githubRefParts[githubRefParts.length - 1];
+}
+
 export const sonarScanner = async () => {
   const projectName = core.getInput('projectName', { required: true });
   const projectKey = core.getInput('projectKey', { required: true });
@@ -13,11 +18,6 @@ export const sonarScanner = async () => {
   const enablePullRequestDecoration = JSON.parse(
     core.getInput('enablePullRequestDecoration', { required: false }),
   );
-
-  function getBranchOrTagName(githubRef: string): string {
-    const githubRefParts = githubRef.split('/');
-    return githubRefParts[githubRefParts.length - 1];
-  }
 
   const sonarParameters: string[] = [
     `-Dsonar.login=${token}`,
