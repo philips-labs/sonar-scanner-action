@@ -38,11 +38,11 @@ describe('SonarQube Scanner Action for a Pull Request', () => {
     expect(exec).toHaveBeenCalledWith('sonar-scanner', [
       '-Dsonar.login=Dummy-Security-Token',
       '-Dsonar.host.url=http://example.com',
-      '-Dsonar.projectBaseDir=.',
       '-Dsonar.projectKey=key',
-      '-Dsonar.projectName=HelloWorld',
+      "-Dsonar.projectName='HelloWorld'",
       '-Dsonar.scm.provider=git',
       '-Dsonar.sourceEncoding=UTF-8',
+      '-Dsonar.projectBaseDir=.',
       '-Dsonar.pullrequest.key=101',
       '-Dsonar.pullrequest.base=master',
       '-Dsonar.pullrequest.branch=feature/featureX',
@@ -56,11 +56,11 @@ describe('SonarQube Scanner Action for a Pull Request', () => {
     expect(exec).toHaveBeenCalledWith('sonar-scanner', [
       '-Dsonar.login=Dummy-Security-Token',
       '-Dsonar.host.url=http://example.com',
-      '-Dsonar.projectBaseDir=.',
       '-Dsonar.projectKey=key',
-      '-Dsonar.projectName=HelloWorld',
+      "-Dsonar.projectName='HelloWorld'",
       '-Dsonar.scm.provider=git',
       '-Dsonar.sourceEncoding=UTF-8',
+      '-Dsonar.projectBaseDir=.',
     ]);
   });
 });
