@@ -20,6 +20,7 @@ describe('SonarQube Scanner Action', () => {
     process.env['INPUT_SCMPROVIDER'] = 'git';
     process.env['INPUT_SOURCEENCODING'] = 'UTF-8';
     process.env['INPUT_ENABLEPULLREQUESTDECORATION'] = 'false';
+    delete process.env['INPUT_ONLYCONFIG'];
   });
 
   it.each`
@@ -55,13 +56,6 @@ describe('SonarQube Scanner Action', () => {
     ]);
   });
 
-  // it('Skip invoking scanner, only config.', async () => {
-  //   process.env['INPUT_ONLYCONFIG'] = 'true';
-
-  //   await sonarScanner();
-  //   expect(exec).toHaveBeenCalledTimes(0);
-  // });
-
   it('starts the action when baseDir  set', async () => {
     process.env['INPUT_BASEDIR'] = 'src/';
 
@@ -76,6 +70,13 @@ describe('SonarQube Scanner Action', () => {
       '-Dsonar.projectBaseDir=src/',
       '-Dsonar.branch.name=develop',
     ]);
+  });
+
+  it('Skip invoking scanner, only config.', async () => {
+    process.env['INPUT_ONLYCONFIG'] = 'true';
+
+    await sonarScanner();
+    expect(exec).not.toHaveBeenCalled();
   });
 
   it('throws an error when SonarQube fails', async () => {
