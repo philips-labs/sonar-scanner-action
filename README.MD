@@ -1,4 +1,5 @@
 # Sonar Scanner Action
+## Moved to https://github.com/philips-software/sonar-scanner-action
 
 A GitHub action to configure and run the SonarQube scanner inside a [SonarQube Docker container](https://hub.docker.com/r/philipssoftware/sonar-scanner).
 
